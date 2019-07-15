@@ -481,17 +481,17 @@ proc `%`*(keyVals: openArray[tuple[key: string, val: JsonNode]]): JsonTree =
 proc `%`*[T](elements: openArray[T]): JsonTree =
   ## Generic constructor for JSON data. Creates a new `JArray JsonNode`
   result = newJArray()
-  for elem in elements: result.add(%elem)
+  for elem in elements: result.add(JsonNode(%elem))
 
 proc `%`*(o: object): JsonTree =
   ## Generic constructor for JSON data. Creates a new `JObject JsonNode`
   result = newJObject()
-  for k, v in o.fieldPairs: result[k] = %v
+  for k, v in o.fieldPairs: result[k] = JsonNode(%v)
 
 proc `%`*(o: ref object): JsonTree =
   ## Generic constructor for JSON data. Creates a new `JObject JsonNode`
   if o.isNil:
-    result = newJNull()
+    result = JsonTree(newJNull())
   else:
     result = %(o[])
 
